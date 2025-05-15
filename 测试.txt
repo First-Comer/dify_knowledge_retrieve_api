@@ -1,0 +1,34 @@
+# 构造请求体
+$bodyB = @{
+  node_data = @{
+    id                      = "kr-node-1"                              #知识检索节点的唯一标识符。通常用于区分不同的节点，无需修改
+    title                   = "KnowledgeRetrievalNode"      
+    type                    = "knowledge-retrieval"
+    query_variable_selector = @("question")
+    dataset_ids             = @("*****")   #知识库数据id，可以多个，英文逗号隔开","
+    retrieval_mode          = "single"                               #指定检索模式。常见的值可能是 "single" 或 "batch"
+    single_retrieval_config = @{
+      model = @{
+        provider          = "tongyi"                                   #自行换
+        name              = "qwen-max"
+        mode              = "chat"
+        completion_params = @{ temperature = 0.7 }
+      }
+      top_k           = 5
+      score_threshold = 0.1
+    }
+  }
+  inputs    = @{ question = "***？" }
+  tenant_id = "****"         #租户 ID，标识不同用户
+  app_id    = "****"             #应用程序 ID，用于区分不同的应用
+  user_id   = "****"             #用户 ID，表示发起请求的用户
+  user_from = "api"
+}
+
+# 序列化并发送
+$jsonB = $bodyB | ConvertTo-Json -Depth 5
+Invoke-RestMethod `
+  -Uri 'http://localhost/console/api/workflow/knowledge-retriever/fetch-dataset' `
+  -Method POST `
+  -ContentType 'application/json; charset=utf-8' `
+  -Body $jsonB
