@@ -14,6 +14,7 @@ dify-main/
 │   ├── Dockerfile                # 新建此文件
 │   ├── docker-compose.yml      # 修改此文件
 
+
 Docker部署
 新建Dockerfile，本文以源代码为基础镜像，并将本地新增的代码复制到新容器中。 复制我的Dockerfile即可：
 
