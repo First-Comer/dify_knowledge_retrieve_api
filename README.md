@@ -17,24 +17,23 @@ dify-main/
 │   ├── docker-compose.yml      # 修改此文件
 </code></pre>
 
-
-<p>Docker部署</p>
+## Docker部署
 新建Dockerfile，本文以源代码为基础镜像，并将本地新增的代码复制到新容器中。 复制我的Dockerfile即可：
-
+<pre><code>
 FROM langgenius/dify-api:1.3.1
 
 COPY ../api /app/api
 COPY ../api/core/workflow/nodes/knowledge_retrieval/knowledge_retrieval_node.py /app/api/core/workflow/nodes/knowledge_retrieval/knowledge_retrieval_node.py
-
+</code></pre>
 
 修改源码部署方式，因为本次的开发只是对/api中的小模块进行API封装，所以我们只需要修改/api部分代码的部署即可。 复制我的docker-compose.yaml：
 
 
-##API封装代码
+## API封装代码
 
 
 首先是路由注册： dify-main\api\controllers\console\_init_.py
-
+<pre><code>
 from .knowledge.retriever import KnowledgeRetrieverApi
 
 api.add_resource(
@@ -42,40 +41,44 @@ api.add_resource(
     "/workflow/knowledge-retriever/fetch-dataset",
     endpoint="workflow_knowledge_retriever_fetch"
 )
-
+<code></pre>
 还有两个代码一起给了。
-
-# api/services/workflow/dataset_retriever.py
-
-
-# api/controllers/console/knowledge/retriever.py
+dataset_retriever.py
+retriever.py
 
 
-快速启动
+## 快速启动
 启动 Dify 服务器的最简单方法是运行我们的 docker-compose.yml 文件。在运行安装命令之前，请确保您的机器上安装了 Docker 和 Docker Compose：
-
+<pre><code>
 cd docker
 cp .env.example .env
 docker compose up -d
+<code></pre>
 运行后，可以在浏览器上访问 http://localhost/install 进入 Dify 控制台并开始初始化安装操作。 ok了，非常方便，后面我们测试还需要一些参数在下一章。
 
-参数规范
+## 参数规范
 先给测试.txt，这个前提是部署的Dify有workflow或是chatflow，有上传和embedding好了的知识库。
 
 
 1.user_id查询
 1.1连接到 PostgreSQL 数据库 powershell
+<pre><code>
 docker-compose exec db sh
 psql -U postgres
+<code></pre>
  1.2查看数据库列表 sql
-
+<pre><code>
 \l  # 列出所有数据库
 \c dify  # 连接到 dify 数据库
 \dt
 SELECT id, email, name FROM accounts LIMIT 5;
+<code></pre>
   到这目的达到了 
 
-2.tenant_id查询 同user_id查询，最后命令换为SELECT id, name FROM tenants;
+2.tenant_id查询 同user_id查询，最后命令换为
+<pre><code>
+SELECT id, name FROM tenants;
+    <code></pre>
 
 3.app_id查询；  url里面有自己看。
 
