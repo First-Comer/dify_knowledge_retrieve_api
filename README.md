@@ -1,3 +1,4 @@
+POST请求，URL为console/api/workflow/knowledge-retriever/fetch-dataset
 拉取下来的dify源码并添加并修改如下结构的代码：
 
 <pre><code>
@@ -18,6 +19,7 @@ dify-main/
 </code></pre>
 
 ## Docker部署
+
 新建Dockerfile，本文以源代码为基础镜像，并将本地新增的代码复制到新容器中。 复制我的Dockerfile即可：
 <pre><code>
 FROM langgenius/dify-api:1.3.1
@@ -41,22 +43,26 @@ api.add_resource(
     "/workflow/knowledge-retriever/fetch-dataset",
     endpoint="workflow_knowledge_retriever_fetch"
 )
-<code></pre>
+</code></pre>
 还有两个代码一起给了。
 dataset_retriever.py
 retriever.py
 
 
 ## 快速启动
+
+
 启动 Dify 服务器的最简单方法是运行我们的 docker-compose.yml 文件。在运行安装命令之前，请确保您的机器上安装了 Docker 和 Docker Compose：
 <pre><code>
 cd docker
 cp .env.example .env
 docker compose up -d
-<code></pre>
+</code></pre>
 运行后，可以在浏览器上访问 http://localhost/install 进入 Dify 控制台并开始初始化安装操作。 ok了，非常方便，后面我们测试还需要一些参数在下一章。
 
 ## 参数规范
+
+
 先给测试.txt，这个前提是部署的Dify有workflow或是chatflow，有上传和embedding好了的知识库。
 
 
@@ -65,20 +71,20 @@ docker compose up -d
 <pre><code>
 docker-compose exec db sh
 psql -U postgres
-<code></pre>
+</code></pre>
  1.2查看数据库列表 sql
 <pre><code>
 \l  # 列出所有数据库
 \c dify  # 连接到 dify 数据库
 \dt
 SELECT id, email, name FROM accounts LIMIT 5;
-<code></pre>
+</code></pre>
   到这目的达到了 
 
 2.tenant_id查询 同user_id查询，最后命令换为
 <pre><code>
 SELECT id, name FROM tenants;
-    <code></pre>
+</code></pre>
 
 3.app_id查询；  url里面有自己看。
 
