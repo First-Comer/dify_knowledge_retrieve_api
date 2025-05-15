@@ -1,4 +1,6 @@
 拉取下来的dify源码并添加并修改如下结构的代码：
+
+<pre><code>
 dify-main/
 ├── api/                          # 你修改过的 Dify API 源码
 │   ├── services/   
@@ -13,9 +15,10 @@ dify-main/
 ├── docker/
 │   ├── Dockerfile                # 新建此文件
 │   ├── docker-compose.yml      # 修改此文件
+</code></pre>
 
 
-Docker部署
+<p>Docker部署</p>
 新建Dockerfile，本文以源代码为基础镜像，并将本地新增的代码复制到新容器中。 复制我的Dockerfile即可：
 
 FROM langgenius/dify-api:1.3.1
@@ -27,7 +30,7 @@ COPY ../api/core/workflow/nodes/knowledge_retrieval/knowledge_retrieval_node.py 
 修改源码部署方式，因为本次的开发只是对/api中的小模块进行API封装，所以我们只需要修改/api部分代码的部署即可。 复制我的docker-compose.yaml：
 
 
-API封装代码
+##API封装代码
 
 
 首先是路由注册： dify-main\api\controllers\console\_init_.py
